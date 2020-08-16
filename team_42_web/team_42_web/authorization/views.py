@@ -62,13 +62,14 @@ def user_register(request):
     password = request.POST.get('password')
     print('email',email)
     print('password',password)
+    type = request.POST.get('type')
     try:
         user = firebase_auth.create_user_with_email_and_password(email, password)
         print(user)
     except :
         message = "Invalid Login Credentials"
         return render(request,'authorization/register.html', {'message':message})
-
+    database.child("type").child("email").set(type)
     return redirect('index')
 
 def user_login(request):
@@ -89,7 +90,7 @@ def user_login(request):
     except :
         message = "Invalid Login Credentials"
         return render(request,'authorization/login.html', {'message':message})
-
+    request.session['type'] = database.child("type").child("email").get()
     return render(request,'authorization/index.html',{'email':request.session.get('email')})
  
 """ def user_register(request):
