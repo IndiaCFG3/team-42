@@ -142,5 +142,5 @@ def teacherRegistartion(request):
     
     except :
         message = "Can't Update Your Details"
-        return render(request , 'teacherRegistration.html' , {'message' : message})
+        return render(request , 'authorization/teacherRegistration.html' , {'message' : message})
     return render(request,'authorization/teacherRegistration.html',{})
