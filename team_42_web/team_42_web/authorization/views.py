@@ -142,33 +142,39 @@ def teacherRegistartion(request):
 
 
 def teacher_form(request):
-    fname = request.POST.get('fname')
-    lname = request.POST.get('lname')
-    email = request.POST.get('email')
-    field1 = request.POST.get('field1')
-    field2 = request.POST.get('field2')
-    field3 = request.POST.get('field3')
-    school = request.POST.get("school")
-    
-    data = { "fname" : fname,
-            "lname" : lname,
-            "email" : email,
-            "field1" : field1,
-            "field2" : field2,
-            "field3" : field3,
-            "school" : school,
-            }
-    
-    
-    print(data)
-    
-    try:
+    if request.method=='POST':
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        email = request.POST.get('email')
+        field1 = request.POST.get('field1')
+        field2 = request.POST.get('field2')
+        field3 = request.POST.get('field3')
+        school = request.POST.get("school")
         
-        db.collection(u"Admin_data").document("School1").collection("Teachers").document(fname).set(data)
-        print(request.session.get('uid'))
-    except :
-        message = "Could not send data"
-        print(message)
-        return render(request,'authorization/classroom.html', {})
-    
-    return redirect('index')
+        data = { "fname" : fname,
+                "lname" : lname,
+                "email" : email,
+                "field1" : field1,
+                "field2" : field2,
+                "field3" : field3,
+                "school" : school,
+                }
+        
+        
+        print(data)
+        if email==None:
+            return render(request,'authorization/classroom.html', {})
+        try:
+            
+            db.collection(u"Admin_data").document("School1").collection("Teachers").document(fname).set(data)
+            print(request.session.get('uid'))
+            return render(request,'authorization/index.html', {})
+        except :
+            message = "Could not send data"
+            print(message)
+            return render(request,'authorization/classroom.html', {})
+    return render(request,'authorization/classroom.html', {})
+    #return redirect('index')
+
+def class_room_observation(request):
+    return render(request,'authorization/classobservation.html',{})
