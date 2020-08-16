@@ -1,0 +1,17 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Index
+        </title>
+        <link href="{% static 'css/myscript.css' %}" rel="stylesheet" />
+    </head>
+
+    <body>
+        <h1>Index</h1>
+        <h1>Wecome {{request.session.email}} </h1>
+        <a href="{% url 'authorization:login' %}">Login</a>
+        <a href="{% url 'authorization:register' %}">Register</a>
+        <a href="{% url 'authorization:logout' %}">Logout</a>
+    </body>
+</html>

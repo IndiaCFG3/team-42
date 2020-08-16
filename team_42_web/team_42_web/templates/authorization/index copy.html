@@ -1,0 +1,17 @@
+{% extends 'authorization/base_temp.html' %}
+
+{% block title_block %}
+    Collections
+{% endblock %}
+
+{% block body_block %}
+    <div class="container">
+        <h1>Index</h1>
+        {% if request.session.email %}
+        <p class="jumbotron">Welcome {{request.session.email}}</p>
+        {% else %}
+        <p class="jumbotron">Welcome guest</p>
+        {% endif %}
+        
+    </div>
+{% endblock %}
