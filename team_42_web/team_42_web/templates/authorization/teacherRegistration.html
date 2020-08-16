@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,7 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <title>Class Observation</title>
   </head>
   <body align>
@@ -25,10 +26,10 @@
                 <a class="nav-link" href="#">Contact</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Login</a>                  
+                <a class="nav-link" href="{% url 'authorization:login' %}">Login</a>                  
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Register</a>
+                <a class="nav-link" href="{% url 'authorization:register' %}">Register</a>
             </li>
             
           </ul>
@@ -40,7 +41,7 @@
         <h1 class="well"> Teacher Registration Form</h1>
         <div class="col-lg-12 well">
         <div class="row">
-                    <form>
+                    <form method="POST" action="{% url 'authorization:teacher_register' %}">
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-6 form-group">
@@ -85,7 +86,7 @@
                             <input type="text" placeholder="Enter Phone Number Here.." name = "phone" class="form-control">
                         </div>		
                         
-                        <button type="button" class="btn btn-lg btn-info">Submit</button>					
+                        <input type="submit" class="btn btn-lg btn-info" value="SUBMIT">					
                         </div>
                     </form> 
                     </div>

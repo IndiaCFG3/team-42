@@ -177,7 +177,15 @@ def teacher_form(request):
     #return redirect('index')
 
 def class_room_observation(request):
-    return render(request,'authorization/classobservation.html',{})
+
+    doc_ref=db.collection(u"Admin_data").document("School1").collection("Teachers").document("a")
+    doc = doc_ref.get()
+    
+    data = doc.to_dict()
+    data_arr = {"data1":data,"data2":data,"data3":data}
+    print(data_arr)
+    
+    return render(request,'frontend/dist/classobservation.html',{"data_arr":sorted(data_arr.items())})
         
 
 
