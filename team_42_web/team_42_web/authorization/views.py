@@ -46,6 +46,10 @@ current_user_uid = ""
 ######################################
 
 def index(request):
+    print(request.session.get('uid'))
+    if request.session.get('uid')==None:
+        return render(request,'authorization/login.html',{})
+    print(request.session['type'])
     return render(request,'authorization/index.html',{})
 
 def user_register(request):
@@ -98,8 +102,9 @@ def user_login(request):
         request.session['uid'] = str(uid)
         request.session['email'] = str(email)
         t = db.collection("Users").document(email).get()
-        
+
         request.session['type']=t.to_dict().get('type')
+        print(request.session['type'])
         ###Get the type of person from database
         #data = db.collection("Users").document(email).get()
         #print(data.val())
@@ -120,7 +125,7 @@ def user_logout(request):
     print(request.session.get('uid'))     
     firebase_auth.current_user = None
     print(request.session)
-    return render(request, "authorization/index.html",{})
+    return render(request, "authorization/login.html",{})
 
 #def getClassNames(request):
 
@@ -166,7 +171,7 @@ def teacher_form(request):
         
         print(data)
         if email==None:
-            return render(request,'authorization/classroom.html', {})
+            return render(request,'authorization/teacher_form.html', {})
         try:
             
             db.collection(u"Admin_data").document("School1").collection("Teachers").document(fname).set(data)
@@ -175,8 +180,8 @@ def teacher_form(request):
         except :
             message = "Could not send data"
             print(message)
-            return render(request,'authorization/classroom.html', {})
-    return render(request,'authorization/classroom.html', {})
+            return render(request,'authorization/teacher_form.html', {})
+    return render(request,'authorization/teacher_form.html', {})
     #return redirect('index')
 
 def student_teacher_form(request):
@@ -204,8 +209,8 @@ def student_teacher_form(request):
             return render(request,'authorization/student_teacher_form.html', {})
         try:
             
-            db.collection(u"Admin_data").document("School1").collection("Student_teachers").document(fname).set(data)
-            print(request.session.get('uid'))
+            db.collection("Admin_data").document("School1").collection("Student_teachers").document(email).set(data)
+            
             return render(request,'authorization/index.html', {})
         except :
             message = "Could not send data"

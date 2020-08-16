@@ -61,12 +61,23 @@
                             <a class="nav-link" href="{% url 'authorization:index' %}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
+                                
                             </a>
-                            <a class="nav-link" href="{% url 'authorization:overallactivity' %}">
+                            
+                            {% if request.session.type=='Teacher' %} 
+                            <a class="nav-link" href="{% url 'authorization:teacher-form' %}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Activities
+                                Fill Teacher form
                             </a>
+                            {% elif request.session.type=='Student Mentor' %}
+                            <a class="nav-link" href="{% url 'authorization:teacher-form' %}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Fill student form
+                            </a>
+                            {% endif %}
+
                             <div class="sb-sidenav-menu-heading">Interface</div>
+                            
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Layouts
@@ -78,6 +89,7 @@
                                     <a class="nav-link" href="{% url 'authorization:layout-sidenav-light' %}">Light Sidenav</a>
                                 </nav>
                             </div>
+                            
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                 Pages
