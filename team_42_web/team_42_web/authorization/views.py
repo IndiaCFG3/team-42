@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.conf import settings
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 import pyrebase
 
@@ -30,7 +30,7 @@ database = firebase.database()
 
 # Get a reference to the database service
 def index(request):
-    return render(request,'authorization/index.html',{})
+    return render(request,'authorization/Testing-master/dist/index.html',{})
 
 def user_register(request):
     
@@ -68,11 +68,40 @@ def user_login(request):
         return render(request,'authorization/login.html', {'message':message})
 
     return render(request,'authorization/index.html',{'email':request.session.get('email')})
+ 
+""" def user_register(request):
+    
+    email = request.POST.get('email')
+    email = str(email).rstrip(' \t\r\n\0') #new line added here --------
+    password = request.POST.get('password')
+    print('email',email)
+    print('password',password)
+    try:
+        
+        user = firebase_auth.create_user_with_email_and_password(email, password)
+        print("User created")
+        e = user['localId']
+        print("Check")
+        data = {"email": email, "password":password}
+        me = db.collection("Users").document(e).set(data)
+        print(me)
+        print("Success")
+        return render(request,'authorization/index.html',{})
+    except:
+        message = "Invalid Login Credentials"
+        return render(request,'authorization/register.html', {'message':message})
 
+    return render(request,'authorization/index.html',{})"""
 
 def user_logout(request):
     del request.session['uid']
     del request.session['email']    
     firebase_auth.current_user = None
     print(request.session)
-    return render(request, "authorization/index.html",{})
+    return render(request, "authorization/Testing-master/dist/index.html",{})
+
+#def getClassNames(request):
+
+
+def teacherRegistartion(request):
+    return render(request,'authorization/teacherRegistration.html',{})
