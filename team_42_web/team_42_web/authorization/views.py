@@ -58,7 +58,7 @@ def user_register(request):
     t = request.POST.get('type')
     print(t)
     try:
-        user = firebase_auth.create_user_with_email_and_password(email, password)
+        user = firebase_auth.create_user_with_email_and_password(email, password)        
         print(user)
         uid = user['localId']
         email = user['email']
@@ -69,7 +69,7 @@ def user_register(request):
         print(request.session.get('uid'))
         data = {"email":email, "password" : password,"type":t}
         db.collection(u"Users").document(email).set(data)
-        
+        request.session['type'] = str(t)
         user = firebase_auth.sign_in_with_email_and_password(email, password)
     except :
         message = "Invalid Login Credentials"
@@ -82,6 +82,7 @@ def user_login(request):
     email = request.POST.get('email')
     email = str(email).rstrip(' \t\r\n\0') #new line added here --------
     password = request.POST.get('password')
+    
     print('email',email)
     print('password',password)
     user=None
@@ -90,12 +91,16 @@ def user_login(request):
 
     try:
         user = firebase_auth.sign_in_with_email_and_password(email, password)
-        print(user)
+        #print(user)
         uid = user['localId']
         email = user['email']
         request.session['uid'] = str(uid)
         request.session['email'] = str(email)
-        
+
+        ###Get the type of person from database
+        #data = db.collection("Users").document(email).get()
+        #print(data.val())
+        #request.session['type'] = str(t)
         print(request)
         return render(request,'authorization/index.html',{'email':request.session.get('email')})
     except :
@@ -107,7 +112,8 @@ def user_login(request):
 
 def user_logout(request):
     del request.session['uid']
-    del request.session['email']  
+    del request.session['email'] 
+    del request.session['type'] 
     print(request.session.get('uid'))     
     firebase_auth.current_user = None
     print(request.session)
@@ -157,12 +163,11 @@ def teacher_form(request):
     print(data)
     
     try:
-        
-        db.collection(u"Admin_data").document("School1").collection("Teachers").document().set(data)
+        db.collection(u"Admin_data").document("School1").collection("Teachers").document(fname).set(data)
         print(request.session.get('uid'))
     except :
         message = "Could not send data"
         print(message)
-        return render(request,'authorization/register.html', {'message':message})
+        return render(request,'authorization/classroom.html', {})
     
     return redirect('index')
