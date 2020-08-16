@@ -59,7 +59,10 @@ def user_register(request):
     print(t)
     try:
         user = firebase_auth.create_user_with_email_and_password(email, password)
+<<<<<<< HEAD
         
+=======
+>>>>>>> e064c9148bd2bbc0bb51afc3b336421cdeeb2de2
         print(user)
         uid = user['localId']
         email = user['email']
@@ -134,3 +137,36 @@ def teacherRegistartion(request):
         message = "Can't Update Your Details"
         return render(request , 'authorization/teacherRegistration.html' , {'message' : message})
     return render(request,'authorization/teacherRegistration.html',{})
+
+
+def teacher_form(request):
+    fname = request.POST.get('fname')
+    lname = request.POST.get('lname')
+    email = request.POST.get('email')
+    field1 = request.POST.get('field1')
+    field2 = request.POST.get('field2')
+    field3 = request.POST.get('field3')
+    school = request.POST.get("school")
+    
+    data = { "fname" : fname,
+            "lname" : lname,
+            "email" : email,
+            "field1" : field1,
+            "field2" : field2,
+            "field3" : field3,
+            "school" : school,
+            }
+    
+    
+    print(data)
+    
+    try:
+        
+        db.collection(u"Admin_data").document(school).collection("Teachers").set(data)
+        print(request.session.get('uid'))
+    except :
+        message = "Could not send data"
+        print(message)
+        return render(request,'authorization/register.html', {'message':message})
+    
+    return redirect('index')
