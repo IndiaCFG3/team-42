@@ -55,13 +55,21 @@ def user_register(request):
     password = request.POST.get('password')
     print('email',email)
     print('password',password)
+    type = request.POST.get('type')
     try:
         user = firebase_auth.create_user_with_email_and_password(email, password)
+        user = firebase_auth.sign_in_with_email_and_password(email, password)
         print(user)
+        uid = user['localId']
+        email = user['email']
+        request.session['uid'] = str(uid)
+        request.session['email'] = str(email)
+
+        print(request.session.get('uid'))
     except :
         message = "Invalid Login Credentials"
         return render(request,'authorization/register.html', {'message':message})
-
+    database.child("type").child("email").set(type)
     return redirect('index')
 
 def user_login(request):
@@ -71,6 +79,10 @@ def user_login(request):
     password = request.POST.get('password')
     print('email',email)
     print('password',password)
+    user=None
+    if email==None or password==None:
+        pass
+
     try:
         user = firebase_auth.sign_in_with_email_and_password(email, password)
         print(user)
@@ -78,17 +90,20 @@ def user_login(request):
         email = user['email']
         request.session['uid'] = str(uid)
         request.session['email'] = str(email)
+        
         print(request)
+        return render(request,'authorization/index.html',{'email':request.session.get('email')})
     except :
         message = "Invalid Login Credentials"
         return render(request,'authorization/login.html', {'message':message})
-
+    request.session['type'] = database.child("type").child("email").get()
     return render(request,'authorization/index.html',{'email':request.session.get('email')})
  
 
 def user_logout(request):
     del request.session['uid']
-    del request.session['email']    
+    del request.session['email']  
+    print(request.session.get('uid'))     
     firebase_auth.current_user = None
     print(request.session)
     return render(request, "authorization/index.html",{})
@@ -96,4 +111,20 @@ def user_logout(request):
 #def getClassNames(request):
 
 def teacherRegistartion(request):
+    data = { "fname" : request.POST.get('fname'),
+            "lname" : request.POST.get('lname'),
+            "addr" : request.POST.get('addr'),
+            "city" : request.POST.get('city'),
+            "state" : request.POST.get('state'),
+            "zip" : request.POST.get('zip'),
+            "title" : request.POST.get('title'),
+            "school" :request.POST.get('school'),
+            "phone" :request.POST.get('phone') }
+    try:
+        unid = request.session['uid']
+        database.child("unid").set(data)
+    
+    except :
+        message = "Can't Update Your Details"
+        return render(request , 'authorization/teacherRegistration.html' , {'message' : message})
     return render(request,'authorization/teacherRegistration.html',{})
