@@ -4,9 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.urls import reverse
-
+import os
 import pyrebase
 
+###### Firestore #######
+from firebase import firebase
+import firebase_admin
+from firebase_admin import credentials, firestore, auth
+########################
 config = {
     "apiKey": "AIzaSyBPDBNI4BoXYX2l_m0Ak7s3vn4B3AbKsPo",
     "authDomain": "cfg42-fe337.firebaseapp.com",
@@ -21,6 +26,22 @@ config = {
 firebase = pyrebase.initialize_app(config)
 firebase_auth = firebase.auth()
 database = firebase.database()
+
+
+#############FIRESTORE##############
+
+cred = credentials.Certificate(
+    os.path.join(os.path.dirname(__file__), "ServiceAccountKey.json")
+    
+)
+default_app = firebase_admin.initialize_app(cred)
+print(    os.path.join(os.path.dirname(__file__), "ServiceAccountKey.json")
+)
+db = firestore.client()
+
+current_user_uid = ""
+
+######################################
 
 # Log the user in
 #user = auth.sign_in_with_email_and_password(email, password)
