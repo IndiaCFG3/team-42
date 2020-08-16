@@ -194,6 +194,5 @@ def teacher_form(request):
             message = "Could not send data"
             print(message)
             return render(request,'authorization/studentRegForm.html', {})
-    
-    return redirect('index')
+        return redirect('index')
     
