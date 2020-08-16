@@ -127,4 +127,20 @@ def user_logout(request):
 
 
 def teacherRegistartion(request):
+    data = { "fname" : request.POST.get('fname'),
+            "lname" : request.POST.get('lname'),
+            "addr" : request.POST.get('addr'),
+            "city" : request.POST.get('city'),
+            "state" : request.POST.get('state'),
+            "zip" : request.POST.get('zip'),
+            "title" : request.POST.get('title'),
+            "school" :request.POST.get('school'),
+            "phone" :request.POST.get('phone') }
+    try:
+        unid = request.session['uid']
+        database.child("unid").set(data)
+    
+    except :
+        message = "Can't Update Your Details"
+        return render(request , 'teacherRegistration.html' , {'message' : message})
     return render(request,'authorization/teacherRegistration.html',{})
