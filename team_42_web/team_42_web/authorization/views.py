@@ -164,11 +164,11 @@ def teacher_form(request):
     
     try:
         
-        db.collection(u"Admin_data").document(school).collection("Teachers").set(data)
+        db.collection(u"Admin_data").document("School1").collection("Teachers").document(fname).set(data)
         print(request.session.get('uid'))
     except :
         message = "Could not send data"
         print(message)
-        return render(request,'authorization/register.html', {'message':message})
+        return render(request,'authorization/classroom.html', {})
     
     return redirect('index')
