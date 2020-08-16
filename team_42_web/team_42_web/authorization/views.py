@@ -101,16 +101,9 @@ def user_login(request):
         print(request)
         return render(request,'authorization/index.html',{'email':request.session.get('email')})
     except :
-<<<<<<< HEAD
-        message="Invalid login credentials"
-            
-        return render(request,'authorization/login.html', {"message":message})
-
-=======
         message = "Invalid Login Credentials"
         return render(request,'authorization/login.html', {'message':message})
     request.session['type'] = database.child("type").child("email").get()
->>>>>>> 32258bb2fb5a081d67ecd2dfaf8d4262fb63bf38
     return render(request,'authorization/index.html',{'email':request.session.get('email')})
  
 """ def user_register(request):
