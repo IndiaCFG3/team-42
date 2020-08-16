@@ -142,84 +142,62 @@ def user_logout(request):
 
 
 def teacher_form(request):
-    fname = request.POST.get('fname')
-    lname = request.POST.get('lname')
-    email = request.POST.get('email')
-    field1 = request.POST.get('field1')
-    field2 = request.POST.get('field2')
-    field3 = request.POST.get('field3')
-    school = request.POST.get("school")
-    
-    data = { "fname" : fname,
-            "lname" : lname,
-            "email" : email,
-            "field1" : field1,
-            "field2" : field2,
-            "field3" : field3,
-            "school" : school,
-            }
-    
-    
-    print(data)
-    
+    if request.method=='POST':
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        email = request.POST.get('email')
+        field1 = request.POST.get('field1')
+        field2 = request.POST.get('field2')
+        field3 = request.POST.get('field3')
+        school = request.POST.get("school")
+        
+        data = { "fname" : fname,
+                "lname" : lname,
+                "email" : email,
+                "field1" : field1,
+                "field2" : field2,
+                "field3" : field3,
+                "school" : school,
+                }
+        
+        
+        print(data)
+        if email==None:
+            return render(request,'authorization/classroom.html', {})
+        try:
+            
+            db.collection(u"Admin_data").document("School1").collection("Teachers").document(fname).set(data)
+            print(request.session.get('uid'))
+            return render(request,'authorization/index.html', {})
+        except :
+            message = "Could not send data"
+            print(message)
+            return render(request,'authorization/classroom.html', {})
+    return render(request,'authorization/classroom.html', {})
+    #return redirect('index')
+
+def class_room_observation(request):
+    return render(request,'authorization/classobservation.html',{})
+        
+
+
+def studentRegistration(request):
+    data = { "fname" : request.POST.get('fname'),
+                "lname" : request.POST.get('lname'),
+                "addr" : request.POST.get('addr'),
+                "city" : request.POST.get('city'),
+                "state" : request.POST.get('state'),
+                "zip" : request.POST.get('zip'),
+                "classs" : request.POST.get('class'),
+                "school" :request.POST.get('school'),
+                "phone" :request.POST.get('phone') }
     try:
-        db.collection(u"Admin_data").document("School1").collection("Teachers").document(fname).set(data)
+        
+        db.collection(u"Admin_data").document("School1").collection("Student").document(fname).set(data)
         print(request.session.get('uid'))
     except :
-        message = "Could not send data"
-        print(message)
-        return render(request,'authorization/teacher_form.html', {})
-    
+         message = "Could not send data"
+         print(message)
+         return render(request,'authorization/studentRegForm.html', {})
     return redirect('index')
-
-def student_teacher_form(request):
-    fname = request.POST.get('fname')
-    lname = request.POST.get('lname')
-    email = request.POST.get('email')
-    field1 = request.POST.get('field1')
-    field2 = request.POST.get('field2')
-    field3 = request.POST.get('field3')
-    school = request.POST.get("school")
-    
-    data = { "fname" : fname,
-            "lname" : lname,
-            "email" : email,
-            "field1" : field1,
-            "field2" : field2,
-            "field3" : field3,
-            "school" : school,
-            }
-    
-    print(data)
-    
-    try:
-        db.collection(u"Admin_data").document("School1").collection("Student_teachers").document(fname).set(data)
-        print(request.session.get('uid'))
-    except :
-        message = "Could not send data"
-        print(message)
-        return render(request,'authorization/student_teacher_form.html', {})
-    
-    return redirect('index')
-
-
-# def studentRegistration(request):
-#     data = { "fname" : request.POST.get('fname'),
-#                 "lname" : request.POST.get('lname'),
-#                 "addr" : request.POST.get('addr'),
-#                 "city" : request.POST.get('city'),
-#                 "state" : request.POST.get('state'),
-#                 "zip" : request.POST.get('zip'),
-#                 "classs" : request.POST.get('class'),
-#                 "school" :request.POST.get('school'),
-#                 "phone" :request.POST.get('phone') }
-#     try:
-    
-#         db.collection(u"Admin_data").document("School1").collection("Student").document(fname).set(data)
-#         print(request.session.get('uid'))
-#     except :
-#         message = "Could not send data"
-#         print(message)
-#         return render(request,'authorization/studentRegForm.html', {})
-#     return redirect('index')
     
