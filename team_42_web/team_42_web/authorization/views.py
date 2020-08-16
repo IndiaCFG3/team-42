@@ -59,10 +59,7 @@ def user_register(request):
     print(t)
     try:
         user = firebase_auth.create_user_with_email_and_password(email, password)
-<<<<<<< HEAD
         
-=======
->>>>>>> ae8c89e1ee6000ed4e036ccb9e3d78624e31cd7e
         print(user)
         uid = user['localId']
         email = user['email']
