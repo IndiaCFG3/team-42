@@ -45,13 +45,6 @@ current_user_uid = ""
 
 ######################################
 
-# Log the user in
-#user = auth.sign_in_with_email_and_password(email, password)
-
-# Log the user in anonymously
-#user = auth.sign_in_anonymous()
-
-# Get a reference to the database service
 def index(request):
     return render(request,'authorization/index.html',{})
 
@@ -66,13 +59,17 @@ def user_register(request):
     print(t)
     try:
         user = firebase_auth.create_user_with_email_and_password(email, password)
+<<<<<<< HEAD
         
+=======
+>>>>>>> ae8c89e1ee6000ed4e036ccb9e3d78624e31cd7e
         print(user)
         uid = user['localId']
         email = user['email']
         request.session['uid'] = str(uid)
         request.session['email'] = str(email)
-
+        data = {"email":email, "password" : password}
+        db.collection(u"Users").document(email).set(data)
         print(request.session.get('uid'))
         data = {"email":email, "password" : password,"type":t}
         db.collection(u"Users").document(email).set(data)
@@ -111,29 +108,6 @@ def user_login(request):
     request.session['type'] = database.child("type").child("email").get()
     return render(request,'authorization/index.html',{'email':request.session.get('email')})
  
-""" def user_register(request):
-    
-    email = request.POST.get('email')
-    email = str(email).rstrip(' \t\r\n\0') #new line added here --------
-    password = request.POST.get('password')
-    print('email',email)
-    print('password',password)
-    try:
-        
-        user = firebase_auth.create_user_with_email_and_password(email, password)
-        print("User created")
-        e = user['localId']
-        print("Check")
-        data = {"email": email, "password":password}
-        me = db.collection("Users").document(e).set(data)
-        print(me)
-        print("Success")
-        return render(request,'authorization/index.html',{})
-    except:
-        message = "Invalid Login Credentials"
-        return render(request,'authorization/register.html', {'message':message})
-
-    return render(request,'authorization/index.html',{})"""
 
 def user_logout(request):
     del request.session['uid']
@@ -144,7 +118,6 @@ def user_logout(request):
     return render(request, "authorization/index.html",{})
 
 #def getClassNames(request):
-
 
 def teacherRegistartion(request):
     data = { "fname" : request.POST.get('fname'),
