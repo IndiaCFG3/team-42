@@ -64,7 +64,14 @@ def user_register(request):
     print('password',password)
     try:
         user = firebase_auth.create_user_with_email_and_password(email, password)
+        user = firebase_auth.sign_in_with_email_and_password(email, password)
         print(user)
+        uid = user['localId']
+        email = user['email']
+        request.session['uid'] = str(uid)
+        request.session['email'] = str(email)
+
+        print(request.session.get('uid'))
     except :
         message = "Invalid Login Credentials"
         return render(request,'authorization/register.html', {'message':message})
@@ -78,6 +85,10 @@ def user_login(request):
     password = request.POST.get('password')
     print('email',email)
     print('password',password)
+    user=None
+    if email==None or password==None:
+        pass
+
     try:
         user = firebase_auth.sign_in_with_email_and_password(email, password)
         print(user)
@@ -85,10 +96,13 @@ def user_login(request):
         email = user['email']
         request.session['uid'] = str(uid)
         request.session['email'] = str(email)
+        
         print(request)
+        return render(request,'authorization/index.html',{'email':request.session.get('email')})
     except :
-        message = "Invalid Login Credentials"
-        return render(request,'authorization/login.html', {'message':message})
+        message="Invalid login credentials"
+            
+        return render(request,'authorization/login.html', {"message":message})
 
     return render(request,'authorization/index.html',{'email':request.session.get('email')})
  
@@ -118,7 +132,8 @@ def user_login(request):
 
 def user_logout(request):
     del request.session['uid']
-    del request.session['email']    
+    del request.session['email']  
+    print(request.session.get('uid'))     
     firebase_auth.current_user = None
     print(request.session)
     return render(request, "authorization/index.html",{})
