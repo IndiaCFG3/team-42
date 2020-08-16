@@ -62,6 +62,7 @@ def user_register(request):
     password = request.POST.get('password')
     print('email',email)
     print('password',password)
+    type = request.POST.get('type')
     try:
         user = firebase_auth.create_user_with_email_and_password(email, password)
         user = firebase_auth.sign_in_with_email_and_password(email, password)
@@ -75,7 +76,7 @@ def user_register(request):
     except :
         message = "Invalid Login Credentials"
         return render(request,'authorization/register.html', {'message':message})
-
+    database.child("type").child("email").set(type)
     return redirect('index')
 
 def user_login(request):
@@ -100,10 +101,16 @@ def user_login(request):
         print(request)
         return render(request,'authorization/index.html',{'email':request.session.get('email')})
     except :
+<<<<<<< HEAD
         message="Invalid login credentials"
             
         return render(request,'authorization/login.html', {"message":message})
 
+=======
+        message = "Invalid Login Credentials"
+        return render(request,'authorization/login.html', {'message':message})
+    request.session['type'] = database.child("type").child("email").get()
+>>>>>>> 32258bb2fb5a081d67ecd2dfaf8d4262fb63bf38
     return render(request,'authorization/index.html',{'email':request.session.get('email')})
  
 """ def user_register(request):
@@ -157,5 +164,5 @@ def teacherRegistartion(request):
     
     except :
         message = "Can't Update Your Details"
-        return render(request , 'teacherRegistration.html' , {'message' : message})
+        return render(request , 'authorization/teacherRegistration.html' , {'message' : message})
     return render(request,'authorization/teacherRegistration.html',{})
