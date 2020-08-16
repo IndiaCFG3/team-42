@@ -179,6 +179,41 @@ def teacher_form(request):
     return render(request,'authorization/classroom.html', {})
     #return redirect('index')
 
+def student_teacher_form(request):
+    if request.method=='POST':
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        email = request.POST.get('email')
+        field1 = request.POST.get('field1')
+        field2 = request.POST.get('field2')
+        field3 = request.POST.get('field3')
+        school = request.POST.get("school")
+        
+        data = { "fname" : fname,
+                "lname" : lname,
+                "email" : email,
+                "field1" : field1,
+                "field2" : field2,
+                "field3" : field3,
+                "school" : school,
+                }
+        
+        
+        print(data)
+        if email==None:
+            return render(request,'authorization/student_teacher_form.html', {})
+        try:
+            
+            db.collection(u"Admin_data").document("School1").collection("Student_teachers").document(fname).set(data)
+            print(request.session.get('uid'))
+            return render(request,'authorization/index.html', {})
+        except :
+            message = "Could not send data"
+            print(message)
+            return render(request,'authorization/student_teacher_form.html', {})
+    return render(request,'authorization/student_teacher_form.html', {})
+    #return redirect('index')
+
 def class_room_observation(request):
 
     doc_ref=db.collection(u"Admin_data").document("School1").collection("Teachers").document("a")
