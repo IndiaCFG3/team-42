@@ -53,13 +53,14 @@ def user_register(request):
     email = request.POST.get('email')
     email = str(email).rstrip(' \t\r\n\0') #new line added here --------
     password = request.POST.get('password')
+
     print('email',email)
     print('password',password)
     t = request.POST.get('type')
     print(t)
     try:
         user = firebase_auth.create_user_with_email_and_password(email, password)        
-        print(user)
+        #print(user)
         uid = user['localId']
         email = user['email']
         request.session['uid'] = str(uid)
@@ -96,17 +97,19 @@ def user_login(request):
         email = user['email']
         request.session['uid'] = str(uid)
         request.session['email'] = str(email)
-
+        t = db.collection("Users").document(email).get()
+        
+        request.session['type']=t.to_dict().get('type')
         ###Get the type of person from database
         #data = db.collection("Users").document(email).get()
         #print(data.val())
         #request.session['type'] = str(t)
-        print(request)
+        print(request.session['type'])
         return render(request,'authorization/index.html',{'email':request.session.get('email')})
     except :
         message = "Invalid Login Credentials"
         return render(request,'authorization/login.html', {'message':message})
-    request.session['type'] = database.child("type").child("email").get()
+    #request.session['type'] = database.child("type").child("email").get()
     return render(request,'authorization/index.html',{'email':request.session.get('email')})
  
 
