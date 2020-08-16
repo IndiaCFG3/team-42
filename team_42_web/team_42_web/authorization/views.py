@@ -53,7 +53,7 @@ current_user_uid = ""
 
 # Get a reference to the database service
 def index(request):
-    return render(request,'authorization/Testing-master/dist/index.html',{})
+    return render(request,'authorization/index.html',{})
 
 def user_register(request):
     
@@ -121,7 +121,7 @@ def user_logout(request):
     del request.session['email']    
     firebase_auth.current_user = None
     print(request.session)
-    return render(request, "authorization/Testing-master/dist/index.html",{})
+    return render(request, "authorization/index.html",{})
 
 #def getClassNames(request):
 

@@ -10,5 +10,13 @@ urlpatterns = [
     path('logout/',views.user_logout,name='logout'),
     path('register/',views.user_register,name='register'),
     path('teacher-registration/',views.teacherRegistartion,name='teacher_register'),
+    path('activity-page/',views.index,name='activity'),
+    path('class_observation/',views.index,name='class_observation'),
+    path('layout-static/',views.index,name='layout-static'),
+    path('layout-sidenav-light/',views.index,name='layout-sidenav-light'),
+    path('401/',views.index,name='401'),
+    path('404/',views.index,name='404'),
+    path('500/',views.index,name='500'),
+    
 ]
 
