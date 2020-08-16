@@ -174,9 +174,8 @@ def teacher_form(request):
     return redirect('index')
 
 
-
-    def studentRegistration(request):
-        data = { "fname" : request.POST.get('fname'),
+def studentRegistration(request):
+    data = { "fname" : request.POST.get('fname'),
                 "lname" : request.POST.get('lname'),
                 "addr" : request.POST.get('addr'),
                 "city" : request.POST.get('city'),
@@ -185,14 +184,13 @@ def teacher_form(request):
                 "classs" : request.POST.get('class'),
                 "school" :request.POST.get('school'),
                 "phone" :request.POST.get('phone') }
-     
-        try:
+     try:
         
-            db.collection(u"Admin_data").document("School1").collection("Student").document(fname).set(data)
-            print(request.session.get('uid'))
-        except :
-            message = "Could not send data"
-            print(message)
-            return render(request,'authorization/studentRegForm.html', {})
-        return redirect('index')
+         db.collection(u"Admin_data").document("School1").collection("Student").document(fname).set(data)
+         print(request.session.get('uid'))
+     except :
+         message = "Could not send data"
+         print(message)
+         return render(request,'authorization/studentRegForm.html', {})
+     return redirect('index')
     
