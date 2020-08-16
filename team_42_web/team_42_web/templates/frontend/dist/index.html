@@ -63,18 +63,12 @@
                                 Dashboard
                                 
                             </a>
-                            
-                            {% if request.session.type=='Teacher' %} 
                             <a class="nav-link" href="{% url 'authorization:teacher-form' %}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Fill Teacher form
                             </a>
-                            {% elif request.session.type=='Student Mentor' %}
-                            <a class="nav-link" href="{% url 'authorization:teacher-form' %}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Fill student form
-                            </a>
-                            {% endif %}
+                            
+                            
 
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             
@@ -103,13 +97,22 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="www.google.com">
+                                                
+                                                Fill Teacher form
+                                            </a>
                                             {% if request.session.uid %}
-                                                <a class="nav-link" href="{% url 'authorization:login' %}">Logout</a>
+                                                <a class="nav-link" href="{% url 'authorization:logout' %}">Logout</a>
                                             {% else %}
                                                 <a class="nav-link" href="{% url 'authorization:login' %}">Login</a>
                                                 <a class="nav-link" href="{% url 'authorization:register' %}">Register</a>
                                             {% endif %}
                                             <!-- <a class="nav-link" href="password.html">Forgot Password</a> -->
+                                            <a class="nav-link" href="{% url 'authorization:teacher-form' %}">
+                                                
+                                                Fill Teacher form
+                                            </a>
+                                            
                                         </nav>
                                     </div>
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">

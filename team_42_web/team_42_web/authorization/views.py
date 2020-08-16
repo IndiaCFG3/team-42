@@ -50,7 +50,7 @@ def index(request):
     if request.session.get('uid')==None:
         return render(request,'authorization/login.html',{})
     print(request.session['type'])
-    return render(request,'authorization/index.html',{})
+    return render(request,'frontend/dist/index.html',{})
 
 def user_register(request):
     
